@@ -65,6 +65,11 @@ class Minesweeper:
                                 queue.append((nx, ny))
         return True
 
+    def has_won(self):
+        total_cells = self.width * self.height
+        revealed_cells = sum(sum(1 for cell in row if cell) for row in self.revealed)
+        return revealed_cells == total_cells - len(self.mines)
+
     def play(self):
         while True:
             self.print_board()
@@ -84,7 +89,12 @@ class Minesweeper:
 
             if not self.reveal(x, y):
                 self.print_board(reveal=True)
-                print("Game Over! You hit a mine.")
+                print("💥 Game Over! You hit a mine.")
+                break
+
+            if self.has_won():
+                self.print_board(reveal=True)
+                print("🎉 Congratulations! You cleared the field!")
                 break
 
         print("Thanks for playing!")
