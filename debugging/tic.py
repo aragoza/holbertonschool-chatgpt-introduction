@@ -7,10 +7,10 @@ def print_board(board):
     for i, row in enumerate(board):
         print(" | ".join(row))
         if i < len(board) - 1:
-            print("--+---+--")  # nicer separator
+            print("--+---+--")
 
 
-def check_winner(board):
+def check_wwinner(board):
     """
     Check if there is a winner on the board.
 
@@ -35,6 +35,25 @@ def check_winner(board):
     return False
 
 
+def get_valid_input(player, name):
+    """
+    Ask for a valid integer input (0,1,2).
+    Handles chars, negatives, out of range inputs.
+    """
+    while True:
+        value = input(f"Enter {name} (0, 1, or 2) for player {player}: ")
+        if not value.isdigit():
+            print("Invalid input! Please enter a number (0, 1, or 2).")
+            continue
+
+        value = int(value)
+
+        if 0 <= value <= 2:
+            return value
+        else:
+            print("Number out of range! Please enter 0, 1, or 2.")
+
+
 def tic_tac_toe():
     """
     Main function to play Tic-Tac-Toe between two players.
@@ -44,15 +63,18 @@ def tic_tac_toe():
 
     while True:
         print_board(board)
-        row = int(input(f"Enter row (0, 1, or 2) for player {player}: "))
-        col = int(input(f"Enter column (0, 1, or 2) for player {player}: "))
+
+        # validated input for row & col
+        row = get_valid_input(player, "row")
+        col = get_valid_input(player, "column")
 
         if board[row][col] == " ":
             board[row][col] = player
-            if check_winner(board):
+            if check_wwinner(board):
                 print_board(board)
                 print(f"Player {player} wins!")
                 break
+
             # Switch player
             player = "O" if player == "X" else "X"
         else:
@@ -61,4 +83,3 @@ def tic_tac_toe():
 
 # Start the game
 tic_tac_toe()
-  
